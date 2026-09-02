@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Reporte de Clientes</title>
+    <style>
+        body { font-family: Helvetica, Arial, sans-serif; color: #333; margin: 30px; }
+        h1 { color: #007bff; text-align: center; font-size: 24px; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #666; font-size: 12px; margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 11px; }
+        th { background-color: #f2f2f2; color: #333; }
+        .productos-list { margin: 0; padding-left: 15px; }
+        .productos-list li { font-size: 10px; color: #555; }
+    </style>
+</head>
+<body>
+    <h1>Reporte General de Clientes</h1>
+    <div class="subtitle">Sistema de Gestión de Clientes y Productos</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 10%;">ID</th>
+                <th style="width: 25%;">Nombre</th>
+                <th style="width: 35%;">Email</th>
+                <th style="width: 30%;">Productos Asociados</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="c : ${clientes}">
+                <td th:text="${c.id}">1</td>
+                <td th:text="${c.nombre}">Juan Pérez</td>
+                <td th:text="${c.email}">juan@mail.com</td>
+                <td>
+                    <ul class="productos-list" th:if="${c.productos != null and !c.productos.empty}">
+                        <li th:each="p : ${c.productos}">
+                            <span th:text="${p.nombreProducto}">Laptop</span> - $<span th:text="${p.precio}">1200</span>
+                        </li>
+                    </ul>
+                    <span th:if="${c.productos == null or c.productos.empty}" style="color: #999; font-style: italic;">Sin productos</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

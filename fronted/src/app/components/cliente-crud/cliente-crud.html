@@ -1,0 +1,68 @@
+<div style="margin: 20px; font-family: Arial, sans-serif;">
+  <h2>Gestión de Clientes</h2>
+
+  <!-- Formulario único para Crear o Actualizar -->
+  <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border: 1px solid #ddd;">
+    <h3>{{ editandoId ? 'Editar Cliente' : 'Nuevo Cliente' }}</h3>
+    <input type="text" placeholder="Nombre" [(ngModel)]="nuevoCliente.nombre" style="margin-right: 8px; padding: 6px;">
+    <input type="email" placeholder="Correo" [(ngModel)]="nuevoCliente.email" style="margin-right: 8px; padding: 6px;">
+    <button (click)="guardarCliente()" style="padding: 6px 12px; background: #28a745; color: white; border: none; cursor: pointer;">
+      {{ editandoId ? 'Actualizar' : 'Guardar' }}
+    </button>
+    <button *ngIf="editandoId" (click)="cancelarEdicion()" style="margin-left: 5px; padding: 6px 12px; background: #6c757d; color: white; border: none; cursor: pointer;">
+      Cancelar
+    </button>
+  </div>
+
+  <!-- Tabla de Clientes -->
+  <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
+    <thead>
+      <tr style="background: #e9ecef;">
+        <th style="padding: 8px;">ID</th>
+        <th style="padding: 8px;">Nombre</th>
+        <th style="padding: 8px;">Email</th>
+        <th style="padding: 8px;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of clientes">
+        <td style="padding: 8px;">{{ c.id }}</td>
+        <td style="padding: 8px;">{{ c.nombre }}</td>
+        <td style="padding: 8px;">{{ c.email }}</td>
+        <td style="padding: 8px;">
+          <button (click)="prepararEdicion(c)" style="background: #ffc107; border: none; padding: 4px 8px; cursor: pointer; margin-right: 5px;">Editar</button>
+          <button (click)="verProductos(c)" style="background: #17a2b8; color: white; border: none; padding: 4px 8px; cursor: pointer; margin-right: 5px;">Productos</button>
+          <button (click)="eliminar(c.id)" style="background: #dc3545; color: white; border: none; padding: 4px 8px; cursor: pointer;">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Panel sencillo de Productos del cliente seleccionado -->
+  <div *ngIf="clienteSeleccionadoParaProductos" style="margin-top: 20px; padding: 15px; background: #eef9fb; border: 1px solid #17a2b8;">
+    <h3>Productos de: {{ clienteSeleccionadoParaProductos.nombre }}</h3>
+    
+    <div style="margin-bottom: 10px;">
+      <input type="text" placeholder="Nombre producto" [(ngModel)]="nuevoProducto.nombreProducto" style="margin-right: 8px; padding: 5px;">
+      <input type="number" placeholder="Precio" [(ngModel)]="nuevoProducto.precio" style="margin-right: 8px; padding: 5px; width: 80px;">
+      <button (click)="guardarProducto()" style="padding: 5px 10px; background: #007bff; color: white; border: none; cursor: pointer;">Agregar</button>
+    </div>
+
+    <ul>
+      <li *ngFor="let p of clienteSeleccionadoParaProductos.productos">
+        {{ p.nombreProducto }} - ${{ p.precio }}
+      </li>
+      <p *ngIf="!clienteSeleccionadoParaProductos.productos || clienteSeleccionadoParaProductos.productos.length === 0" style="color: #666; font-style: italic;">
+        No tiene productos registrados.
+      </p>
+    </ul>
+    
+    <button (click)="clienteSeleccionadoParaProductos = undefined" style="padding: 4px 8px; background: #6c757d; color: white; border: none; cursor: pointer;">Cerrar panel</button>
+  </div>
+  <button (click)="descargarPdf()" style="padding: 6px 12px; background: #dc3545; color: white; border: none; cursor: pointer; margin-bottom: 15px;">
+      Descargar Reporte PDF
+  </button>
+  <button (click)="descargarXml()" style="padding: 6px 12px; background: #17a2b8; color: white; border: none; cursor: pointer; margin-left: 10px;">
+  Descargar XML
+</button>
+</div>
